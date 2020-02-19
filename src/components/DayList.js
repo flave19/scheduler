@@ -5,7 +5,7 @@ export default function DayList(props) {
   
   const days = props.days.map((day, index) => {
     return (
-      < DayListItem
+      <DayListItem
         key={day.id}
         name={day.name}
         spots={day.spots}

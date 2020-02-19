@@ -1,3 +1,13 @@
-import "styles.scss"
+import React from "react";
+import "./styles.scss"
+import Header from "./Header"
+import Empty from "./Empty"
 
-export 
+export default function Appointment(props) {
+  return(
+    <article className="appointment">
+      <Header time="123pm" />
+      <Empty/>
+    </article>
+  )
+}
