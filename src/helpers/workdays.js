@@ -43,4 +43,11 @@ function getAppointmentsForDay(state, day) {
 }
  
 
-getAppointmentsForDay(state, "Tuesday")
+getAppointmentsForDay(state, [])
+
+
+const [state, setState] = useState({
+  day: "Monday",
+  days: [],
+  appointments: {}
+});

@@ -74,21 +74,65 @@ const appointments = [
 // ];
 
 export default function Application(props) {
-  const [day, setDay] = useState("Monday");
 
-  const [days, setDays] = useState([])
-
-    if (days.length === 0 ){
-      axios.get("http://localhost:8001/api/days").then(response => {
-    console.log(response.data)
-    console.log(response, "red")
-      
-    setDays(response.data);
+  const [state, setState] = useState({
+    day: "Monday",
+    days: [],
+    appointments: {}
   });
 
-    }
+  const setDay = day => setState({ ...state, day });
+  const setDays = days => setState({ ...state, days})
 
   
+
+    useEffect(() =>{
+      if(state.days.length === 0){
+      Promise.all([
+        axios.get("http://localhost:8001/api/days"),
+        axios.get("http://localhost:8001/api/appointments"),
+        axios.get("http://localhost:8001/api/interviewers")
+      ])
+      .then(all => {
+        setState(prev => ({
+          ...prev,
+          days: all[0].data,
+          appointments: all[1].data,
+          interviews: all[2].data
+        }))
+      })
+    }
+    })
+  
+
+  // useEffect(() => {
+  //   Promise.all([
+  //     axios.get("http://localhost:8001/api/days"),
+  //     axios.get("http://localhost:8001/api/appointments"),
+  //     axios.get("http://localhost:8001/api/interviews")
+  //   ])
+  //   .then(([days, appointments, interviews]) => {
+  //       setState(prev => ({
+  //         ...prev,
+  //         days: days.data,
+  //         appointments: appointments.data,
+  //         interviews: interviews.data
+  //       }))
+  //     }
+
+  //   )
+  // }, []);
+  // useEffect(() => {
+  //   axios.get("/api/days").then(response => setDays(response.data));
+  // }, []);
+
+
+  // if (state.days.length === 0) {
+  //   axios.get("http://localhost:8001/api/days").then(response => {
+
+  //     setDays(response.data);
+  //   });
+  // }
 
   return (
     <main className="layout">
@@ -100,7 +144,7 @@ export default function Application(props) {
         />
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
-          <DayList days={days} day={day} setDay={setDay} />
+          <DayList days={state.days} day={state.days} setDay={setDay} />
         </nav>
         <img
           className="sidebar__lhl sidebar--centered"
