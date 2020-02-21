@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import "components/Application.scss";
 
-import DayList from "components/DayList"
+import DayList from "components/DayList";
 
 import Appointment from "components/Appointment";
+
+import axios from "axios";
 
 const appointments = [
   {
     id: 1,
-    time: "12pm",
+    time: "12pm"
   },
   {
     id: 2,
@@ -19,7 +21,7 @@ const appointments = [
       interviewer: {
         id: 1,
         name: "Sylvia Palmer",
-        avatar: "https://i.imgur.com/LpaY82x.png",
+        avatar: "https://i.imgur.com/LpaY82x.png"
       }
     }
   },
@@ -31,7 +33,7 @@ const appointments = [
       interviewer: {
         id: 1,
         name: "Sven Jones",
-        avatar: "https://i.imgur.com/twYrpay.jpg",
+        avatar: "https://i.imgur.com/twYrpay.jpg"
       }
     }
   },
@@ -43,37 +45,50 @@ const appointments = [
       interviewer: {
         id: 1,
         name: "Cohana Roy",
-        avatar: "https://i.imgur.com/FK8V841.jpg",
+        avatar: "https://i.imgur.com/FK8V841.jpg"
       }
     }
   },
   {
     id: 5,
-    time: "4pm",
+    time: "4pm"
   }
 ];
 
-const days = [
-  {
-    id: 1,
-    name: "Monday",
-    spots: 2
-  },
-  {
-    id: 2,
-    name: "Tuesday",
-    spots: 5
-  },
-  {
-    id: 3,
-    name: "Wednesday",
-    spots: 0
-  }
-];
+// const days = [
+//   {
+//     id: 1,
+//     name: "Monday",
+//     spots: 2
+//   },
+//   {
+//     id: 2,
+//     name: "Tuesday",
+//     spots: 5
+//   },
+//   {
+//     id: 3,
+//     name: "Wednesday",
+//     spots: 0
+//   }
+// ];
 
 export default function Application(props) {
-  const [day,setDay] = useState("Monday");
+  const [day, setDay] = useState("Monday");
 
+  const [days, setDays] = useState([])
+
+    if (days.length === 0 ){
+      axios.get("http://localhost:8001/api/days").then(response => {
+    console.log(response.data)
+    console.log(response, "red")
+      
+    setDays(response.data);
+  });
+
+    }
+
+  
 
   return (
     <main className="layout">
@@ -85,11 +100,7 @@ export default function Application(props) {
         />
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
-          <DayList
-            days={days}
-            day={day}
-            setDay={setDay}
-          />
+          <DayList days={days} day={day} setDay={setDay} />
         </nav>
         <img
           className="sidebar__lhl sidebar--centered"
@@ -98,7 +109,7 @@ export default function Application(props) {
         />
       </section>
       <section className="schedule">
-         {appointments.map((appointment, index) => {
+        {appointments.map((appointment, index) => {
           return (
             <Appointment
               key={appointment.id}
@@ -106,7 +117,7 @@ export default function Application(props) {
               // time={appointment.time}
               // interview={appointment.student, appointment.interviewer}
             />
-          )
+          );
         })}
         <Appointment key="last" time="5pm" />
       </section>
