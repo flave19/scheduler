@@ -1,11 +1,26 @@
 export function getAppointmentsForDay(state, day) {
-  let empty = [];
+
+  let apptsday = [];
   for (const selectedDay of state.days) {
     if (selectedDay.name === day) {
       for (const appts of selectedDay.appointments) {
-        empty.push(state.appointments[appts])
+        apptsday.push(state.appointments[appts])
       }
     }
   }
-  return empty
+
+  return apptsday
+}
+
+export function getInterview(state, interview) {
+  console.log("purple", state, interview)
+
+  if (!interview ){
+  return null
+  }
+  return {
+    ...interview, interviewer: state.interviewers[interview.interviewer]
+  }
+
+
 }
