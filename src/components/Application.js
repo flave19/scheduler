@@ -8,7 +8,7 @@ import Appointment from "components/Appointment";
 
 import axios from "axios";
 
-import { getAppointmentsForDay, getInterview } from "helpers/selectors";
+import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
 
 export default function Application(props) {
   const [state, setState] = useState({
@@ -18,7 +18,7 @@ export default function Application(props) {
   });
 
   const setDay = day => setState({ ...state, day });
-  const setDays = days => setState({ ...state, days });
+  // const setDays = days => setState({ ...state, days });
 
   useEffect(() => {
     if (state.days.length === 0) {
@@ -31,11 +31,26 @@ export default function Application(props) {
           ...prev,
           days: all[0].data,
           appointments: all[1].data,
-          interviewers: all[2].data
+          interviewers: all[2].data,
         }));
+        console.log("green", all[2].data)
       });
     }
   });
+
+  const schedule = getAppointmentsForDay(state, state.day).map(appointment => {
+    const interviewer = getInterviewersForDay(state, state.day)
+    const interview = getInterview(state, appointment.interview);
+    return (
+      <Appointment
+        key={appointment.id}
+        id={appointment.id}
+        time={appointment.time}
+        interview={interview}
+        interviewer={interviewer}
+      />
+    );
+  })
 
   return (
     <main className="layout">
@@ -56,17 +71,7 @@ export default function Application(props) {
         />
       </section>
       <section className="schedule">
-        {getAppointmentsForDay(state, state.day).map(appointment => {
-          const interview = getInterview(state, appointment.interview);
-          return (
-            <Appointment
-              key={appointment.id}
-              id={appointment.id}
-              time={appointment.time}
-              interview={interview}
-            />
-          );
-        })}
+        {schedule}
         <Appointment key="last" time="5pm" />
       </section>
     </main>

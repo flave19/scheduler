@@ -9,12 +9,15 @@ export default function Form(props) {
   const [name, setName ] = useState(props.name || "");
   const [interviewer, setInterviewer] = useState(props.interviewer || null)
 
-  function reset() {
+
+  console.log('light', props)
+
+  const reset= ()=> {
     setName("")
     setInterviewer(null)
   }
 
-  function cancel() {
+  const onCancel= ()=>{
     reset()
     props.onCancel()
   }
@@ -43,12 +46,7 @@ export default function Form(props) {
       </section>
       <section className="appointment__card-right">
         <section className="appointment__actions">
-          <Button onClick={reset => {
-            cancel()
-          // setName("")
-          //   setInterviewer(null) 
-          //   props.onCancel()
-          }} danger>Cancel</Button>
+          <Button onClick={onCancel} danger>Cancel</Button>
           <Button onClick={() => props.onSave(name, interviewer)} confirm>Save</Button>
         </section>
       </section>

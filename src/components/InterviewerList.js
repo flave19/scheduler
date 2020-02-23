@@ -5,6 +5,7 @@ import "components/InterviewList.scss";
 import { action } from "@storybook/addon-actions/dist/preview";
 
 export default function InterviewerList(props) {
+  console.log('red', props)
   const interviewers = props.interviewers.map((interviewer, index) => {
     return (
       <InterviewerListItem

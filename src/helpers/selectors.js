@@ -27,13 +27,12 @@ export function getInterviewersForDay(state, day) {
  let intday =[]
  for(const selectDay of state.days) {
   if(selectDay.name === day) {
-    for (const appts of selectedDay.appointments){
-      if(state.appointments[appts].interview){
-        intday.push(state.appointments[appts].interview.interviewer)
-      }
+    for (const appts of selectDay.interviewers){
+      intday.push(state.interviewers[appts])
     }
   }
-  return intday
+  
 
  }
+ return intday
 }
