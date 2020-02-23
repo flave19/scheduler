@@ -34,7 +34,9 @@ function getAppointmentsForDay(state, day) {
   for (const selectedDay of state.days) {
     if (selectedDay.name === day) {
       for (const appts of selectedDay.appointments) {
-        empty.push(state.appointments[appts])
+        if(state.appointments[appts].interview){
+          empty.push(state.appointments[appts].interview.interviewer)
+        }
       }
     }
   }
@@ -43,11 +45,11 @@ function getAppointmentsForDay(state, day) {
 }
  
 
-getAppointmentsForDay(state, [])
+getAppointmentsForDay(state, Tuesday)
 
 
-const [state, setState] = useState({
-  day: "Monday",
-  days: [],
-  appointments: {}
-});
+// const [state, setState] = useState({
+//   day: "Monday",
+//   days: [],
+//   appointments: {}
+// });
