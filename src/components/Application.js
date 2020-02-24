@@ -1,24 +1,56 @@
 import React, { useState, useEffect } from "react";
-
-import "components/Application.scss";
-
-import DayList from "components/DayList";
-
-import Appointment from "components/Appointment";
-
 import axios from "axios";
 
-import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
+import "components/Application.scss";
+import DayList from "components/DayList";
+import Appointment from "components/Appointment";
+import {
+  getAppointmentsForDay,
+  getInterview,
+  getInterviewersForDay
+} from "helpers/selectors";
 
 export default function Application(props) {
   const [state, setState] = useState({
     day: "Monday",
     days: [],
-    appointments: {}
+    appointments: {},
+    interviewers: {}
   });
 
   const setDay = day => setState({ ...state, day });
-  // const setDays = days => setState({ ...state, days });
+  const appointments = getAppointmentsForDay(state, state.day);
+  const interviewers = getInterviewersForDay(state, state.day);
+
+  function bookInterview(id, interview) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    setState({
+      ...state,
+      appointments
+    });
+  }
+
+  const schedule = appointments.map(appointment => {
+    const interview = getInterview(state, appointment.interview);
+
+    return (
+      <Appointment
+        key={appointment.id}
+        id={appointment.id}
+        time={appointment.time}
+        interview={interview}
+        interviewers={interviewers}
+        bookInterview={bookInterview}
+      />
+    );
+  });
 
   useEffect(() => {
     if (state.days.length === 0) {
@@ -31,26 +63,12 @@ export default function Application(props) {
           ...prev,
           days: all[0].data,
           appointments: all[1].data,
-          interviewers: all[2].data,
+          interviewers: all[2].data
         }));
-        console.log("green", all[2].data)
+        console.log("green", all[2].data);
       });
     }
   });
-
-  const schedule = getAppointmentsForDay(state, state.day).map(appointment => {
-    const interviewer = getInterviewersForDay(state, state.day)
-    const interview = getInterview(state, appointment.interview);
-    return (
-      <Appointment
-        key={appointment.id}
-        id={appointment.id}
-        time={appointment.time}
-        interview={interview}
-        interviewer={interviewer}
-      />
-    );
-  })
 
   return (
     <main className="layout">

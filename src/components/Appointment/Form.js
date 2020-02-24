@@ -32,15 +32,13 @@ export default function Form(props) {
             name="name"//{props.name}
             type="text"
             placeholder="Enter Student Name"
-            onChange={(event) => { setName(event.target.value) }} //console.log('event: ', event.target.value);
-            /*
-          This must be a controlled component
-        */
+            onChange={(event) => { setName(event.target.value) }} 
+
           />
         </form>
         <InterviewerList
           interviewers={props.interviewers}
-          interviewer={interviewer}
+          value={interviewer}
           setInterviewer={setInterviewer}
         />
       </section>

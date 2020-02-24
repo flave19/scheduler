@@ -2,21 +2,20 @@ import React from "react";
 import InterviewerListItem from "./InterviewerListItem";
 import "components/InterviewList.scss";
 
-import { action } from "@storybook/addon-actions/dist/preview";
-
 export default function InterviewerList(props) {
   console.log('red', props)
-  const interviewers = props.interviewers.map((interviewer, index) => {
+  const interviewers = props.interviewers ? props.interviewers.map(interviewer => {
     return (
       <InterviewerListItem
         key={interviewer.id}
         name={interviewer.name}
         avatar={interviewer.avatar}
-        selected={interviewer.id === props.interviewer}
+        selected={interviewer.id === props.value}
         setInterviewer={event => props.setInterviewer(interviewer.id)}
       />
     );
-  });
+  })
+  :[];
 
   return (
     <section className="interviewers">
