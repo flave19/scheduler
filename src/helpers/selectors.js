@@ -12,8 +12,6 @@ export function getAppointmentsForDay(state, day) {
 }
 
 export function getInterview(state, interview) {
-  console.log("purple", state, interview);
-
   if (!interview) {
     return null;
   }

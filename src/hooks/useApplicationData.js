@@ -6,10 +6,10 @@ const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
 const SET_INTERVIEW = "SET_INTERVIEW";
 
 function reducer(state, action) {
-  console.log("green", action);
+  // console.log("green", state.appointments);
   switch (action.type) {
     case SET_DAY:
-      return { ...state, data: action.day };
+      return { ...state, day: action.day };
     case SET_APPLICATION_DATA:
       return {
         ...state,
@@ -18,12 +18,19 @@ function reducer(state, action) {
         interviewers: action.interviewers
       };
     case SET_INTERVIEW: {
+      const days = state.days.map(day => {
+        let spots = day.appointments
+          .map(appointment => action.appointments[appointment])
+          .filter(currentappt => currentappt.interview === null).length;
 
-
-      
+        console.log("green", spots);
+        return { ...day, spots };
+      });
+      console.log("red", days);
       return {
         ...state,
-        appointments: action.appointments
+        appointments: action.appointments,
+        days
       };
     }
     default:
@@ -41,7 +48,7 @@ export default function useApplicationData(props) {
     interviewers: {}
   });
 
-  const setDay = day => dispatch({ type: SET_DAY, data: day });
+  const setDay = day => dispatch({ type: SET_DAY, day: day });
   /*********************BOOK INTERVIEW***************************/
   function bookInterview(id, interview) {
     const appointment = {
@@ -54,7 +61,8 @@ export default function useApplicationData(props) {
     };
     return axios
       .put(`http://localhost:8001/api/appointments/${id}`, appointment)
-      .then(() =>
+      .then(
+        res => console.log(res),
         dispatch({
           type: SET_INTERVIEW,
           appointments
