@@ -22,11 +22,9 @@ function reducer(state, action) {
         let spots = day.appointments
           .map(appointment => action.appointments[appointment])
           .filter(currentappt => currentappt.interview === null).length;
-
-        console.log("green", spots);
         return { ...day, spots };
       });
-      console.log("red", days);
+
       return {
         ...state,
         appointments: action.appointments,
@@ -61,12 +59,12 @@ export default function useApplicationData(props) {
     };
     return axios
       .put(`http://localhost:8001/api/appointments/${id}`, appointment)
-      .then(
-        res => console.log(res),
-        dispatch({
-          type: SET_INTERVIEW,
-          appointments
-        })
+      .then(() => {
+          return dispatch({
+            type: SET_INTERVIEW,
+            appointments
+          })
+        }
       );
   }
   /***********************DELETE INTERVIEW*************************/
