@@ -1,42 +1,11 @@
 import { useEffect, useReducer } from "react";
 import axios from "axios";
 
-const SET_DAY = "SET_DAY";
-const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
-const SET_INTERVIEW = "SET_INTERVIEW";
-
-function reducer(state, action) {
-  // console.log("green", state.appointments);
-  switch (action.type) {
-    case SET_DAY:
-      return { ...state, day: action.day };
-    case SET_APPLICATION_DATA:
-      return {
-        ...state,
-        days: action.days,
-        appointments: action.appointments,
-        interviewers: action.interviewers
-      };
-    case SET_INTERVIEW: {
-      const days = state.days.map(day => {
-        let spots = day.appointments
-          .map(appointment => action.appointments[appointment])
-          .filter(currentappt => currentappt.interview === null).length;
-        return { ...day, spots };
-      });
-
-      return {
-        ...state,
-        appointments: action.appointments,
-        days
-      };
-    }
-    default:
-      throw new Error(
-        `Tried to reduce with unsupported action type: ${action.type}`
-      );
-  }
-}
+import reducer, {
+  SET_DAY,
+  SET_APPLICATION_DATA,
+  SET_INTERVIEW
+} from "reducers/application";
 
 export default function useApplicationData(props) {
   const [state, dispatch] = useReducer(reducer, {
@@ -109,3 +78,15 @@ export default function useApplicationData(props) {
     cancelInterview
   };
 }
+// put: jest.fn(url => {
+//   return Promise.resolve({
+//     status: 204,
+//     statusText: "No Content"
+//   })
+// }),
+// delete: jest.fn(url => {
+//   return Promise.resolve({
+//     status: 204,
+//     statusText: "No Content"
+//   })
+// })
