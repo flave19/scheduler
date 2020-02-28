@@ -2,9 +2,7 @@ export const SET_DAY = "SET_DAY";
 export const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
 export const SET_INTERVIEW = "SET_INTERVIEW";
 
-
 export default function reducer(state, action) {
-  // console.log("green", state.appointments);
   switch (action.type) {
     case SET_DAY:
       return { ...state, day: action.day };
