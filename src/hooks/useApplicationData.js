@@ -27,7 +27,7 @@ export default function useApplicationData(props) {
       [id]: appointment
     };
     return axios
-      .put(`http://localhost:8001/api/appointments/${id}`, appointment)
+      .put(`api/appointments/${id}`, appointment)
       .then(() => {
           return dispatch({
             type: SET_INTERVIEW,
@@ -47,7 +47,7 @@ export default function useApplicationData(props) {
       [id]: appointment
     };
     return axios
-      .delete(`http://localhost:8001/api/appointments/${id}`, appointment)
+      .delete(`api/appointments/${id}`, appointment)
       .then(() =>
         dispatch({
           type: SET_INTERVIEW,
@@ -58,9 +58,9 @@ export default function useApplicationData(props) {
   /*********************USE EFFECT ***************************/
   useEffect(() => {
     Promise.all([
-      axios.get("http://localhost:8001/api/days"),
-      axios.get("http://localhost:8001/api/appointments"),
-      axios.get("http://localhost:8001/api/interviewers")
+      axios.get("/api/days"),
+      axios.get("/api/appointments"),
+      axios.get("/api/interviewers")
     ]).then(all => {
       dispatch({
         type: SET_APPLICATION_DATA,
@@ -78,15 +78,3 @@ export default function useApplicationData(props) {
     cancelInterview
   };
 }
-// put: jest.fn(url => {
-//   return Promise.resolve({
-//     status: 204,
-//     statusText: "No Content"
-//   })
-// }),
-// delete: jest.fn(url => {
-//   return Promise.resolve({
-//     status: 204,
-//     statusText: "No Content"
-//   })
-// })
