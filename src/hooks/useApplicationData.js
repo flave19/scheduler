@@ -27,7 +27,7 @@ export default function useApplicationData(props) {
       [id]: appointment
     };
     return axios
-      .put(`api/appointments/${id}`, appointment)
+      .put(`/api/appointments/${id}`, appointment)
       .then(() => {
           return dispatch({
             type: SET_INTERVIEW,
@@ -47,7 +47,7 @@ export default function useApplicationData(props) {
       [id]: appointment
     };
     return axios
-      .delete(`api/appointments/${id}`, appointment)
+      .delete(`/api/appointments/${id}`, appointment)
       .then(() =>
         dispatch({
           type: SET_INTERVIEW,
